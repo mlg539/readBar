@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #app{
+            width: 80%;
+            margin:0 auto;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- 一个存放在public下的文档查找界面 -->
+    <input type="text" placeholder="请输入你要查找的关键字" id="search"><button>确认</button><span></span>
+    <div id="d1"></div>
+    
+    <div id="app">
+        <div>
+                <h3>男生版</h3>
+                <a href="http://127.0.0.1:3000/all.txt" v-for="item of 8" style="margin-right: 15px">斗破长穷{{item}}</a>
+        </div>
+        <div>
+                <h3>女生版</h3>
+                <a href="http://127.0.0.1:3000/all.txt" v-for="item of 15" v-if="item>8" style="margin-right: 15px">斗破长穷{{item}}</a>
+        </div>
+</div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+     $("#search").next().click(function(){
+         //获取输入框中的值
+        var value=$("#search").val()
+        //特殊一   输入框的值为空
+        if(!value){
+            console.log(this)
+            $(this).next().html(" 关键词不能为空！").css("color","red")
+            return
+        }
+        
+        //按照输入的关键字  模糊查找   若是有结果就清空之前的内容 显示出来  就不继续查找了    
+        var length=$("#d1").html("").append($("a:contains("+value+")").clone()).children().length;
+        console.log(length)
+        if(length>0){
+            return;
+        } 
+        //若是没有结果的话   就将关键字拆分出来  一个一个的查找   经过对比之后  显示出来  存在很明显的缺点   
+        //方案是按照  内容对此的  漏洞肯定是很多的  
+        value=value.split("")
+        var $div=$("<div></div>")
+ 
+        value.map((a)=>{
+            $div.append($("a:contains("+a+")").clone()) 
+        })
+        var cc=[];
+        $div.children().each(function(a,arr){
+            if(cc.indexOf(arr.innerHTML)==-1){
+                cc.push(arr.innerHTML)
+            }else{
+            $(this).remove()
+            }
+        })
+        console.log($div.children())
+        console.log(cc)
+        $("#d1").html("").append($div)
+
+    //若是使用二叉树进行查询的话  就
+
+
+
+    //特殊二  查询不存在
+    if(cc[0]==null){
+        $(this).next().html(" 查询结果为空！").css("color","red")
+    }
+  
+    })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        li{list-style: none;}
+        .div{width: 280px; margin: 50px auto;}
+        .box_head{border: 1px solid #DDDDDD; padding: 10px;}
+        .box_head li{width: 150px; height: 30px; background: #00BCF3; color: #FFFFFF; margin: 0 10px 10px 0; line-height: 30px; text-align: center; display: inline-block; cursor: pointer;}
+        .box_head li.on{background: #e74303;}
+        .box,.menu,.box1{margin-top: 10px; float: left; width: 260px;}
+        .box li{width:200px;height: 30px; color: #FFFFFF; margin: 0 10px 10px 0; line-height: 30px; float: left; cursor: pointer;}
+ 
+        .box li span.s{margin-left: 20px; color: #00BCF3; cursor: pointer;}
+        .box li span.t{color: #00BCF3; cursor: pointer;}
+        .box .b_a{width: 165px; height: 30px; background: #00BCF3; text-align: center; line-height: 30px; color: #FFFFFF; display: block;}
+    </style>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<div class="div">
+    <div class="box_head js_box_head">
+        <ul>
+            <li>内容1</li>
+        </ul>
+    </div>
+    <div class="box js_box_m">
+        <ul>
+            <li class="box_li"><input type="text" /><span class="s js_s">删除</span></li>
+            <li><span class="t js_t">添加input</span></li>
+        </ul>
+    </div>
+    <div class="box"><a class="b_a js_bc" href="javascript:;">保存到box_head</a></div>
+</div>
+</body>
+<script>
+$(function(){
+      $('.js_t').on('click',function(){
+        var html = '<li class="box_li"><input type="text" /><span class="s js_s">删除</span></li>';
+        $(this).parent().before(html);
+    });
+    $('.js_box_m').delegate('.js_s','click',function(){
+        $(this).parent().remove();
+        var item=$(this).siblings("input").val();
+        $(".box_head li").each(function(){
+    		if(item==this.innerHTML){
+    			$(this).remove();
+    		}
+        });
+        console.log(item);
+    });
+    $('.js_bc').on('click',function(){
+        $('.js_box_m li').each(function(){
+            var data = $(this).hasClass('box_li');
+            var val = $(this).find('input').val();
+            if(data){
+            	if(check(val)){
+                	$('.js_box_head').append('<li>'+ val +'</li>'); 
+                }
+                else{ alert("请不要输入重复信息");}
+            }
+        });
+
+    });
+    function check(x){
+            	var result = true;
+            	$(".box_head li").each(function(){
+            		if(x==this.innerHTML){result=false;}
+            	});
+            	return result;
+        	}
+});
+</script>
+</html>
