@@ -12,6 +12,15 @@
         }
         a{
             text-decoration: none;
+            color:white;
+            background: yellowgreen;
+            padding: 0 15px;
+            line-height: 30px;
+            display: inline-block;
+            height: 30px;
+            border-radius: 10px;
+        }
+        a:hover{
             color:black;
         }
     </style>
@@ -25,7 +34,7 @@
     <div id="app">
         <div>
                 <h3>node.js</h3>
-                <a href="http://127.0.0.1:3000/all.txt" v-for="item of 8" style="margin-right: 15px">斗破长穷{{item}}</a>
+                <a :href='"http://127.0.0.1:3000/"+item' v-for="(item,i) of list" :key="i" style="margin-right: 15px">{{item}}</a>
         </div>
         <div>
                 <h3>女生版</h3>
@@ -34,6 +43,11 @@
 </div>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
+    $(document).keyup(function(event){
+        if(event.keyCode==13){
+            $("#search").next().trigger("click")
+        }
+    })
      $("#search").next().click(function(){
          //获取输入框中的值
         var value=$("#search").val()
@@ -88,17 +102,18 @@
     new Vue({
         el:"#app",
         data:{
-            list:[]
+            list:[],
+            point:[],
         },   
         created(){
             this.getlist()
         },
         methods:{
             getlist(){
-                var url="http:127.0.0.1:3000/getlist"
+                var url="http://127.0.0.1:3000/getlist"
                 axios.get(url).then((res)=>{
-                    console.log(res)
-                    console.log(this)
+                  this.list=res.data.msg
+         
                 })
             }
 
